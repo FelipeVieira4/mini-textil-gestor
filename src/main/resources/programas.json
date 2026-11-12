@@ -5,7 +5,7 @@
       {
         "id": "HOME",
         "titulo": "Home",
-        "viewClassName": "com.minitextil.erp.app.view.HomeView"
+        "viewClassName": "com.minitextil.gestor.app.view.HomeView"
       }
     ]
   },
@@ -15,7 +15,7 @@
       {
         "id": "CADASTRO_EMPRESA",
         "titulo": "Cadastro de Empresa",
-        "viewClassName": "com.minitextil.erp.empresa.view.CadastroEmpresa"
+        "viewClassName": "com.minitextil.gestor.empresa.view.CadastroEmpresa"
       }
     ]
   },
@@ -25,12 +25,12 @@
       {
         "id": "CADASTRO_OPERADOR",
         "titulo": "Cadastro de Operador",
-        "viewClassName": "com.minitextil.erp.operador.view.CadastroOperador"
+        "viewClassName": "com.minitextil.gestor.operador.view.CadastroOperador"
       },
       {
         "id": "CONSULTA_OPERADOR",
         "titulo": "Consulta de Operador",
-        "viewClassName": "com.minitextil.erp.operador.view.ConsultaOperador"
+        "viewClassName": "com.minitextil.gestor.operador.view.ConsultaOperador"
       }
     ]
   },
@@ -38,30 +38,30 @@
     "modulo": "Itens",
     "programas": [
       {
-        "id": "CADASTRO_ITEM",
-        "titulo": "Cadastro de Item",
-        "viewClassName": "com.minitextil.erp.item.view.CadastroItem"
+        "id": "CADASTRO_MATERIAL",
+        "titulo": "Cadastro de Material",
+        "viewClassName": "com.minitextil.gestor.item.material.view.CadastroMaterial"
       },
       {
-        "id": "CONSULTA_ITEM",
-        "titulo": "Consulta de Itens",
-        "viewClassName": "com.minitextil.erp.item.view.ConsultaItem"
+        "id": "CONSULTA_MATERIAL",
+        "titulo": "Consulta de Materiais",
+        "viewClassName": "com.minitextil.gestor.item.material.view.ConsultaMaterial"
       },
       {
         "id": "CONTROLE_ESTOQUE_ITEM",
         "show": false,
         "titulo": "Controle de Estoque do Item",
-        "viewClassName": "com.minitextil.erp.item.view.ControleEstoqueItem"
+        "viewClassName": "com.minitextil.gestor.item.material.view.ControleEstoqueItem"
       },
       {
         "id": "CADASTRO_VARIANTE",
         "titulo": "Controle de Variante",
-        "viewClassName": "com.minitextil.erp.item.view.CadastroVariante"
+        "viewClassName": "com.minitextil.gestor.item.variantes.view.CadastroVariante"
       },
       {
         "id": "CADASTRO_ITEM_SKU",
         "titulo": "Controle de Itens Sku",
-        "viewClassName": "com.minitextil.erp.item.view.CadastroItemSku"
+        "viewClassName": "com.minitextil.gestor.item.sku.view.CadastroItemSku"
       }
     ]
   }
