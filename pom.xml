@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.minitextil</groupId>
-	<artifactId>erp</artifactId>
+	<artifactId>gestor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>
