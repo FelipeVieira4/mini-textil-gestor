@@ -43,9 +43,7 @@ public class GridComponent<T> extends Grid<T> {
     // um valor de filtro ativo no momento.
     private final List<FiltroColuna<T>> filtrosAtivos = new ArrayList<>();
 
-    // Listeners "extras", só para quem quiser reagir a uma mudança de filtro
-    // (ex: atualizar um contador de linhas). Não são mais necessários para
-    // o filtro em si funcionar.
+
     private final List<Consumer<Void>> listenersDeFiltro = new ArrayList<>();
 
     private ListDataProvider<T> dataProvider;
@@ -75,10 +73,23 @@ public class GridComponent<T> extends Grid<T> {
      * @param tipoColuna    define o tipo de campo/lógica de comparação do filtro
      */
     public void addColunaComFiltro(ValueProvider<T, ?> valueProvider, String nomeColuna, TipoColunas tipoColuna) {
-        Grid.Column<T> coluna = this.addColumn(valueProvider)
-                .setSortable(true)
-                .setResizable(true)
-                .setKey(nomeColuna);
+        Grid.Column<T> coluna;
+
+
+        if (tipoColuna == TipoColunas.Boolean) {
+            coluna = this.addColumn(item -> {
+                Object valor = valueProvider.apply(item);
+                if (valor == null) return "";
+                return Boolean.TRUE.equals(valor) ? "Sim" : "Não";
+            }).setSortable(true)
+                    .setResizable(true)
+                    .setKey(nomeColuna);;
+        } else {
+            coluna = this.addColumn(valueProvider)
+                    .setSortable(true)
+                    .setResizable(true)
+                    .setKey(nomeColuna);;
+        }
 
         if (tipoColuna == TipoColunas.Numerico || tipoColuna == TipoColunas.Decimal) {
             coluna.setFlexGrow(0).setWidth("140px");
