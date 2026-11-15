@@ -9,7 +9,6 @@ import com.vaadin.flow.component.Component;
 
 import java.util.List;
 
-@Deprecated
 public class ConsultaOperador extends ProgramErp {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +37,8 @@ public class ConsultaOperador extends ProgramErp {
         grid.addColunaComFiltro(Operador::getId, "ID", TipoColunas.Numerico);
         grid.addColunaComFiltro(Operador::getNome, "Nome", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Operador::getEmail, "Email", TipoColunas.Alfanumerico);
+        grid.addColunaComFiltro(Operador::getUsername, "Username", TipoColunas.Alfanumerico);
+        grid.addColunaComFiltro(Operador::isAtivo, "Ativo", TipoColunas.Boolean);
     }
 
     private void carregarOperadores() {
