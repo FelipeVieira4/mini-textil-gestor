@@ -37,7 +37,6 @@ public class ConsultaOperador extends ProgramErp {
         grid.addColunaComFiltro(Operador::getId, "ID", TipoColunas.Numerico);
         grid.addColunaComFiltro(Operador::getNome, "Nome", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Operador::getEmail, "Email", TipoColunas.Alfanumerico);
-        grid.addColunaComFiltro(Operador::getUsername, "Username", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Operador::isAtivo, "Ativo", TipoColunas.Boolean);
     }
 
