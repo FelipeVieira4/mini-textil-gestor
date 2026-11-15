@@ -11,14 +11,14 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8080:8080"
-      - "5005:5005" # Porta de Debug exposta para o Eclipse
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:5005:5005"
     volumes:
       - .:/app:Z
       - maven-repo:/root/.m2
       - node-modules:/app/node_modules
       - vaadin-cache:/root/.vaadin
-      - target-dir:/app/target
+      #- target-dir:/app/target
     environment:
       - DB_HOST=db
       - DB_NAME=${DB_NAME}
@@ -63,7 +63,7 @@ volumes:
   maven-repo:
   node-modules:
   vaadin-cache:
-  target-dir:
+  #target-dir:
 
 networks:
   backend:

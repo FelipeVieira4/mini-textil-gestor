@@ -1,15 +1,20 @@
 FROM maven:3.9-eclipse-temurin-25-alpine
 WORKDIR /app
 
+
+ARG JBR_VERSION=25.0.4
+ARG JBR_BUILD=b508.27
+
 RUN apk add --no-cache curl tar nodejs npm && \
-    curl -Lo /tmp/jbr.tar.gz \
-      https://cache-redirector.jetbrains.com/intellij-jbr/jbr-25.0.4-linux-musl-x64-b508.27.tar.gz && \
-    mkdir -p /opt/jbr && \
+    curl -fLo /tmp/jbr.tar.gz \
+      "https://cache-redirector.jetbrains.com/intellij-jbr/jbr-${JBR_VERSION}-linux-musl-x64-${JBR_BUILD}.tar.gz" && \
+    mkdir -p /opt/jbr/lib/hotswap && \
     tar -xzf /tmp/jbr.tar.gz -C /opt/jbr --strip-components=1 && \
     rm /tmp/jbr.tar.gz && \
-    mkdir -p /opt/jbr/lib/hotswap && \
-    curl -Lo /opt/jbr/lib/hotswap/hotswap-agent.jar \
-          https://repo1.maven.org/maven2/org/hotswapagent/hotswap-agent/2.0.3/hotswap-agent-2.0.3.jar
+    HA_VERSION=$(curl -s https://repo1.maven.org/maven2/org/hotswapagent/hotswap-agent/maven-metadata.xml \
+      | sed -n 's:.*<release>\(.*\)</release>.*:\1:p') && \
+    curl -fLo /opt/jbr/lib/hotswap/hotswap-agent.jar \
+      "https://repo1.maven.org/maven2/org/hotswapagent/hotswap-agent/${HA_VERSION}/hotswap-agent-${HA_VERSION}.jar"
 
 ENV JAVA_HOME=/opt/jbr
 ENV PATH="$JAVA_HOME/bin:$PATH"
