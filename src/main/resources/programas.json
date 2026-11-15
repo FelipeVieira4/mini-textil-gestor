@@ -64,5 +64,20 @@
         "viewClassName": "com.minitextil.gestor.item.sku.view.CadastroItemSku"
       }
     ]
+  },
+  {
+    "modulo": "Clientes",
+    "programas": [
+      {
+        "id": "CADASTRO_CLIENTE",
+        "titulo": "Cadastro de Cliente",
+        "viewClassName": "com.minitextil.gestor.cliente.view.CadastroCliente"
+      },
+      {
+        "id": "CONSULTA_CLIENTE",
+        "titulo": "Consulta de Cliente",
+        "viewClassName": "com.minitextil.gestor.cliente.view.ConsultaCliente"
+      }
+    ]
   }
 ]
