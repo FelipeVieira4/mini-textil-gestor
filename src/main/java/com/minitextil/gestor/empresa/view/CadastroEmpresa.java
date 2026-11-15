@@ -2,10 +2,11 @@ package com.minitextil.gestor.empresa.view;
 
 import java.util.Optional;
 
+import com.minitextil.gestor.cliente.model.Cliente;
 import com.minitextil.gestor.components.core.program.ProgramErp;
 import com.minitextil.gestor.empresa.model.Empresa;
 import com.minitextil.gestor.empresa.repository.EmpresaRepository;
-import com.minitextil.gestor.empresa.service.EmpresaService;
+import com.minitextil.gestor.genericos.utils.CnpjUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -28,7 +29,6 @@ public class CadastroEmpresa extends ProgramErp {
 	    
 		private final Binder<Empresa> binder = new BeanValidationBinder<>(Empresa.class);
 	    private final EmpresaRepository repository;
-		private final EmpresaService service;
 
 		private final Button btObter = new Button(new Icon(VaadinIcon.SEARCH));
 		
@@ -38,9 +38,8 @@ public class CadastroEmpresa extends ProgramErp {
 	    
 	    private final Checkbox situacao = new Checkbox("Situacao");
 
-	    public CadastroEmpresa(EmpresaRepository repository,EmpresaService service) {
+	    public CadastroEmpresa(EmpresaRepository repository) {
 	        this.repository = repository;
-	        this.service = service;
 	        
 	        this.setWidthFull();
 	        this.setAlignItems(Alignment.CENTER);
@@ -55,15 +54,17 @@ public class CadastroEmpresa extends ProgramErp {
 	                .asRequired("Informe a descrição")
 	                .bind(Empresa::getDescricao, Empresa::setDescricao);
 
-	        binder.forField(cnpjEmpresa)
-			        .withConverter(
-			                cnpjComMascara -> cnpjComMascara == null ? "" : cnpjComMascara.replaceAll("\\D", ""),
-			                cnpjNumerico -> this.service.formatCnpj(cnpjNumerico))
-	                .asRequired("Informe o CNPJ da empresa")
-	                .bind(Empresa::getCnpj, Empresa::setCnpj);
-	        
+			binder.forField(cnpjEmpresa)
+					.asRequired("Informe o CNPJ")
+					.withConverter(
+							CnpjUtils::limpar,      // campo -> bean (grava limpo)
+							CnpjUtils::formatar     // bean -> campo (exibe formatado)
+					)
+					.withValidator(CnpjUtils::formatoValido,
+							"CNPJ deve ter 14 caracteres (os 2 últimos são dígitos)")
+					.bind(Empresa::getCnpj, Empresa::setCnpj);
+
 	        cnpjEmpresa.setPlaceholder("00.000.000/0000-00");
-	        
 	        
 	        binder.forField(situacao)
 	                .bind(Empresa::getSituacao, Empresa::setSituacao);
