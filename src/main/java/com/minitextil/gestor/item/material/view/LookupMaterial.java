@@ -17,7 +17,7 @@ public class LookupMaterial {
         GridComponent<Material> grid = new GridComponent<>(Material.class);
 
         Dialog dialog = new Dialog();
-        dialog.setHeaderTitle("Itens");
+        dialog.setHeaderTitle("Materiais");
         dialog.setWidth("280px");
 
         List<Material> listaOperadores = materialRepository.findAll();
