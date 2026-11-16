@@ -1,7 +1,6 @@
 FROM maven:3.9-eclipse-temurin-25-alpine
 WORKDIR /app
 
-
 ARG JBR_VERSION=25.0.4
 ARG JBR_BUILD=b508.27
 
@@ -19,8 +18,13 @@ RUN apk add --no-cache curl tar nodejs npm && \
 ENV JAVA_HOME=/opt/jbr
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
+ENV HOME=/home/dev
+ENV MAVEN_OPTS="-Dmaven.repo.local=/home/dev/.m2/repository"
+RUN mkdir -p /home/dev/.m2 /home/dev/.vaadin /home/dev/.npm
+
 COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN mvn dependency:go-offline && \
+    chmod -R 777 /home/dev
 
 EXPOSE 8080 5005
 
