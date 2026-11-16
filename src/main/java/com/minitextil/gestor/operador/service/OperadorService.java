@@ -1,5 +1,6 @@
 package com.minitextil.gestor.operador.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,17 +11,24 @@ import com.minitextil.gestor.operador.repository.OperadorRepository;
 @Service
 public class OperadorService {
 	@Autowired
-	private OperadorRepository operadorRepository;
+	private OperadorRepository repository;
 	
 	@Autowired
 	private PasswordEncoder	 passwordEncoder;
-	
-	public Operador salvarOperador(Operador operadorModel) {
-		var senhaCriptografada=passwordEncoder.encode(operadorModel.getSenha());
-		
-		operadorModel.setSenha(senhaCriptografada);
-		
-		return operadorRepository.save(operadorModel);
+
+	@Transactional
+	public Operador salvarOperador(Operador operador, String senhaNova) {
+		boolean temSenhaNova = senhaNova != null && !senhaNova.isBlank();
+
+		if (temSenhaNova) {
+			// Só aqui codifica: senhaNova é texto puro. O encoder já devolve com {bcrypt}.
+			operador.setSenha(passwordEncoder.encode(senhaNova));
+		} else if (operador.getId() == null) {
+			throw new IllegalArgumentException("A senha é obrigatória para novo operador.");
+		}
+		// Edição sem senha nova: mantém o hash que já está no operador, sem codificar de novo.
+
+		return repository.save(operador);
 	}
 	
 	//public boolean validarSenhaOperador(String senha,OperadorModel)
