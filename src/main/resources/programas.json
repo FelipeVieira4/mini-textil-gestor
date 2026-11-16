@@ -64,5 +64,35 @@
         "viewClassName": "com.minitextil.gestor.item.sku.view.CadastroItemSku"
       }
     ]
+  },
+  {
+    "modulo": "Clientes",
+    "programas": [
+      {
+        "id": "CADASTRO_CLIENTE",
+        "titulo": "Cadastro de Cliente",
+        "viewClassName": "com.minitextil.gestor.cliente.view.CadastroCliente"
+      },
+      {
+        "id": "CONSULTA_CLIENTE",
+        "titulo": "Consulta de Cliente",
+        "viewClassName": "com.minitextil.gestor.cliente.view.ConsultaCliente"
+      }
+    ]
+  },
+  {
+    "modulo": "Fornecedor",
+    "programas": [
+      {
+        "id": "CADASTRO_FORNECEDOR",
+        "titulo": "Cadastro de Fornecedor",
+        "viewClassName": "com.minitextil.gestor.fornecedor.view.CadastroFornecedor"
+      },
+      {
+        "id": "CONSULTA_FORNECEDOR",
+        "titulo": "Consulta de Fornecedor",
+        "viewClassName": "com.minitextil.gestor.fornecedor.view.ConsultaFornecedor"
+      }
+    ]
   }
 ]

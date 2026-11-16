@@ -1,6 +1,5 @@
 @import url('./main-layout.css');
 @import url('./views/data-grid-view.css');
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 html {
@@ -22,8 +21,15 @@ html {
     --lumo-body-text-color: #1f2937;
     --lumo-secondary-text-color: #6b7280;
 
-    /* Largura do drawer */
+    /* Drawer (tema escuro) */
     --vaadin-app-layout-drawer-width: 300px;
+    --drawer-bg: #111827;
+    --drawer-text: #cbd5e1;
+    --drawer-text-strong: #ffffff;
+    --drawer-muted: #94a3b8;
+    --drawer-divider: rgba(255, 255, 255, 0.08);
+    --drawer-hover-bg: rgba(255, 255, 255, 0.07);
+    --drawer-active-bg: rgba(79, 70, 229, 0.25);
 }
 
 /* ===== Layout geral ===== */
@@ -39,7 +45,7 @@ vaadin-app-layout::part(navbar) {
 
 /* ===== Drawer escuro com cantos arredondados à direita ===== */
 vaadin-app-layout::part(drawer) {
-    background: #111827;
+    background: var(--drawer-bg);
     border: none;
     border-radius: 0 20px 20px 0;
     overflow: hidden;
@@ -56,43 +62,61 @@ vaadin-app-layout::part(drawer) > * {
     margin: 0;
     padding: var(--lumo-space-l) var(--lumo-space-m);
     text-align: center;
-    color: #fff;
+    color: var(--drawer-text-strong);
     letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--drawer-divider);
 }
 
-/* Menu com respiro maior à direita, longe do canto arredondado */
+/* ===== Menu lateral ===== */
 vaadin-side-nav {
     box-sizing: border-box;
     width: 100%;
     padding: var(--lumo-space-m) var(--lumo-space-m) var(--lumo-space-m) var(--lumo-space-s);
+
+    /* Corrige o texto do hover (o Lumo usa esta variável, pensada para fundo claro) */
+    --lumo-header-text-color: var(--drawer-text-strong);
+    --lumo-body-text-color: var(--drawer-text);
 }
 
 vaadin-side-nav-item {
-    --vaadin-side-nav-item-color: #cbd5e1;
-    color: #cbd5e1;
     font-weight: 500;
-    border-radius: var(--lumo-border-radius-m);
     cursor: pointer;
 }
 
-vaadin-side-nav-item::part(content) {
+/* Estado normal */
+vaadin-side-nav-item::part(link) {
+    color: var(--drawer-text);
+    border-radius: var(--lumo-border-radius-m);
     white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-vaadin-side-nav-item:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.07);
+/* Hover */
+vaadin-side-nav-item::part(link):hover {
+    color: var(--drawer-text-strong);
+    background: var(--drawer-hover-bg);
 }
 
+/* Foco por teclado */
+vaadin-side-nav-item::part(link):focus-visible {
+    outline: 2px solid var(--lumo-primary-color-50pct);
+    outline-offset: -2px;
+}
+
+/* Item do programa da aba ativa */
+vaadin-side-nav-item.item-ativo::part(link) {
+    background: var(--drawer-active-bg);
+    color: var(--drawer-text-strong);
+}
+
+/* Ícones */
 vaadin-side-nav-item vaadin-icon {
-    color: #94a3b8;
+    color: var(--drawer-muted);
 }
 
-/* Item de menu do programa da aba ativa */
-vaadin-side-nav-item.item-ativo {
-    background: rgba(79, 70, 229, 0.25);
-    color: #fff;
+vaadin-side-nav-item:hover > vaadin-icon,
+vaadin-side-nav-item.item-ativo > vaadin-icon {
+    color: var(--drawer-text-strong);
 }
 
 /* ===== Rodapé com botão sair ===== */
@@ -102,11 +126,11 @@ vaadin-side-nav-item.item-ativo {
     flex-direction: column;
     gap: var(--lumo-space-s);
     padding: var(--lumo-space-m);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--drawer-divider);
 }
 
 .drawer-user {
-    color: #94a3b8;
+    color: var(--drawer-muted);
     font-size: var(--lumo-font-size-s);
     text-align: center;
 }
@@ -165,6 +189,8 @@ vaadin-side-nav-item.item-ativo {
 
 /* ===== Campos e botões ===== */
 vaadin-text-field,
+vaadin-email-field,
+vaadin-password-field,
 vaadin-combo-box,
 vaadin-integer-field,
 vaadin-number-field {
@@ -176,4 +202,48 @@ vaadin-number-field {
 vaadin-button[theme~='primary'] {
     font-weight: 600;
     box-shadow: 0 1px 2px rgba(79, 70, 229, 0.3);
+}
+
+.home-card {
+    box-sizing: border-box;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--lumo-space-m);
+    background: #fff;
+    border: 1px solid var(--app-border);
+    border-radius: var(--lumo-border-radius-l);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    padding: var(--lumo-space-l);
+}
+
+.home-card-saudacao {
+    display: block;
+    color: var(--lumo-secondary-text-color);
+    font-size: var(--lumo-font-size-s);
+}
+
+.home-card-usuario {
+    margin: var(--lumo-space-xs) 0 0 0;
+    font-size: var(--lumo-font-size-xl);
+    font-weight: 700;
+    color: var(--lumo-primary-text-color);
+    word-break: break-word;
+}
+
+.home-card-rodape {
+    display: flex;
+    flex-direction: column;
+    gap: var(--lumo-space-xs);
+    padding-top: var(--lumo-space-m);
+    border-top: 1px solid var(--app-border);
+}
+
+.home-card-sistema {
+    font-weight: 600;
+}
+
+.home-card-versao {
+    color: var(--lumo-secondary-text-color);
+    font-size: var(--lumo-font-size-s);
 }

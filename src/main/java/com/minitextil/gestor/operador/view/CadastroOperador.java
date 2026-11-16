@@ -24,25 +24,22 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
-import java.util.List;
 import java.util.Optional;
 
-
-@Deprecated
 public class CadastroOperador extends ProgramErp {
     private static final long serialVersionUID = 1L;
-    
-	private final Binder<Operador> binder = new BeanValidationBinder<>(Operador.class);
+
+    private final Binder<Operador> binder = new BeanValidationBinder<>(Operador.class);
     private final OperadorRepository repository;
     private final OperadorService service;
-
     private final EmpresaRepository empresaRepository;
-    
+
     private final IntegerField id = new IntegerField("Código");
     private final Button btObter = new Button(new Icon(VaadinIcon.SEARCH));
-    
+
     private final TextField nome = new TextField("Nome");
     private final TextField loginName = new TextField("Nome Login");
     private final EmailField email = new EmailField("Email");
@@ -51,42 +48,52 @@ public class CadastroOperador extends ProgramErp {
     private final PasswordField confirmarSenha = new PasswordField("Confirmar Senha");
     private final Checkbox ativo = new Checkbox("Ativo");
 
-    public CadastroOperador(OperadorRepository repository, OperadorService service,EmpresaRepository empresaRepository) {
+    private Operador operadorEmEdicao;
+
+    public CadastroOperador(OperadorRepository repository, OperadorService service,
+                            EmpresaRepository empresaRepository) {
         this.repository = repository;
-        this.service = service;  
-        this.empresaRepository=empresaRepository;
-        
-        
+        this.service = service;
+        this.empresaRepository = empresaRepository;
+
         this.setWidthFull();
         this.setAlignItems(Alignment.CENTER);
 
         setCabecalho("Cadastro de Operador", "Dados gerais de operadores");
 
-        HorizontalLayout idCampo = new HorizontalLayout(id,btObter);
+        HorizontalLayout idCampo = new HorizontalLayout(id, btObter);
         idCampo.setDefaultVerticalComponentAlignment(HorizontalLayout.Alignment.BASELINE);
         idCampo.setWidthFull();
-        
-        
+
         binder.forField(nome)
                 .asRequired("Informe o nome")
                 .bind(Operador::getNome, Operador::setNome);
 
         binder.forField(loginName)
                 .asRequired("Informe o login")
+                .withConverter(
+                        valor -> valor == null ? null : valor.trim(),
+                        valor -> valor == null ? "" : valor
+                )
                 .bind(Operador::getLoginName, Operador::setLoginName);
 
         binder.forField(email)
+                .withValidator(new EmailValidator("E-mail inválido", true))
+                .withConverter(
+                        valor -> valor == null || valor.isBlank() ? null : valor.trim().toLowerCase(),
+                        valor -> valor == null ? "" : valor
+                )
                 .bind(Operador::getEmail, Operador::setEmail);
+        email.setPlaceholder("contato@email.com");
 
-        
-        List<Empresa> listaEmpresas = this.empresaRepository.findAll();
-        empresa.setItems(listaEmpresas);
-        empresa.setItemLabelGenerator(empresa -> empresa.getId() + " - " + empresa.getDescricao());
-        
-        
+
+        empresa.setItems(this.empresaRepository.findAll());
+        empresa.setItemLabelGenerator(e -> e.getId() + " - " + e.getDescricao());
+
         binder.forField(empresa)
-        		.bind(Operador::getEmpresa, Operador::setEmpresa);
-        
+                .asRequired("Selecione uma empresa principal")
+                .bind(Operador::getEmpresa, Operador::setEmpresa);
+
         binder.forField(ativo)
                 .bind(Operador::isAtivo, Operador::setAtivo);
 
@@ -94,120 +101,104 @@ public class CadastroOperador extends ProgramErp {
         id.addValueChangeListener(event -> {
             Integer idDigitado = event.getValue();
             if (idDigitado != null) {
-                ObterDadosOperador(idDigitado.longValue());
+                obterDadosOperador(idDigitado.longValue());
             } else {
                 limparFormulario();
             }
         });
 
-        btObter.addClickListener(_->{
-        	LookupOperador lookup = new LookupOperador();
-
-        	lookup.VerTodosOperador(this.repository, operadorSelecionado -> {
-        	    this.id.setValue(operadorSelecionado.getId().intValue());
-        	});
+        btObter.addClickListener(_ -> {
+            LookupOperador lookup = new LookupOperador();
+            lookup.VerTodosOperador(this.repository, operadorSelecionado ->
+                    this.id.setValue(operadorSelecionado.getId().intValue()));
         });
-        
-        Button btSalvar = new Button("Salvar", _-> salvar(senha.getValue(), confirmarSenha.getValue()));
+
+        Button btSalvar = new Button("Salvar", _ -> salvar());
         btSalvar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        
+
         FormLayout formLayout = new FormLayout();
         formLayout.setWidth("50vw");
         formLayout.setRowSpacing("25px");
-        
-        formLayout.add(idCampo, new Div(), nome, loginName, email, new Div(), empresa, new Div(), senha, confirmarSenha, ativo, new Div(), btSalvar);
+
+        formLayout.add(idCampo, new Div(), nome, loginName, email, new Div(), empresa, new Div(),
+                senha, confirmarSenha, ativo, new Div(), btSalvar);
 
         add(criarCard(formLayout));
+        limparFormulario();
     }
-    
-	private void ObterDadosOperador(Long idBusca) {
+
+    private void obterDadosOperador(Long idBusca) {
         Optional<Operador> operadorOpt = repository.findById(idBusca);
 
         if (operadorOpt.isPresent()) {
-            Operador operador = operadorOpt.get();
-            binder.readBean(operador);
-            
-            if (operador.getEmpresa() != null) {
-                empresa.setValue(operador.getEmpresa());
-            } else {
-                empresa.clear();
-            }
-            
+            operadorEmEdicao = operadorOpt.get();
+            binder.readBean(operadorEmEdicao);
             senha.clear();
             confirmarSenha.clear();
-            Notification.show("Operador ("+idBusca+") encontrado! Modo de edição ativo.");
+            Notification.show("Operador (" + idBusca + ") encontrado! Modo de edição ativo.");
         } else {
             limparFormulario();
-            Notification.show("ID não encontrado. Um novo registro será criado ao salvar.", 4000, Notification.Position.MIDDLE);
+            Notification.show("ID não encontrado. Um novo registro será criado ao salvar.",
+                    4000, Notification.Position.MIDDLE);
         }
     }
 
-	private void salvar(String senhaDigitada, String confirmarSenhaDigitada) {
-	    boolean isEdicao = id.getValue() != null;
+    private void salvar() {
+        String senhaDigitada = senha.getValue();
+        String confirmacao = confirmarSenha.getValue();
+        boolean isEdicao = operadorEmEdicao != null;
 
-	    if (!isEdicao && (senhaDigitada.isBlank() || confirmarSenhaDigitada.isBlank())) {
-	        Notification.show("Informe e confirme a senha!").addThemeVariants(NotificationVariant.LUMO_ERROR);
-	        return;
-	    }
+        // Senha só é obrigatória para novo operador
+        if (!isEdicao && senhaDigitada.isBlank()) {
+            Notification.show("Informe e confirme a senha!")
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
 
-	    if (!senhaDigitada.isBlank() && !senhaDigitada.equals(confirmarSenhaDigitada)) {
-	        Notification.show("As senhas não coincidem!").addThemeVariants(NotificationVariant.LUMO_ERROR);
-	        return;
-	    }
+        if (!senhaDigitada.isBlank() && !senhaDigitada.equals(confirmacao)) {
+            Notification.show("As senhas não coincidem!")
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
 
-	    Operador operador = new Operador();
-	    
-	    if (binder.writeBeanIfValid(operador)) {
-	        
-	        if (isEdicao) {
-	            operador.setId(id.getValue().longValue());
-	        }
+        // Edição: usa o registro carregado, preservando o que não está na tela (ex.: senha atual)
+        Operador operador = isEdicao ? operadorEmEdicao : new Operador();
 
-	        if (!senhaDigitada.isBlank()) {
-	            operador.setSenha(senhaDigitada);
-	        }
+        if (!binder.writeBeanIfValid(operador)) {
+            Notification.show("Preencha os campos obrigatórios corretamente.")
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
 
-	        Optional<Operador> operadorExistente = repository.findByLoginName(loginName.getValue());
-	        if (operadorExistente.isPresent()) {
-	            Long idAtual = id.getValue() != null ? id.getValue().longValue() : null;
-	            if (!operadorExistente.get().getId().equals(idAtual)) {
-	                Notification.show("Nome de Login já usado por outro operador!!")
-	                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
-	                return;
-	            }
-	        }
-	        
-	        if (operador.getEmpresa() == null) {
-	            Notification.show("Selecione uma empresa principal!")
-	                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
-	            return;
-	        }
-	       
-	        try {
-	            Operador salvo = service.salvarOperador(operador);
-	            
-	            Notification.show("Operador salvo com sucesso! ID: " + salvo.getId())
-	                    .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-	            
-	            limparFormulario();
-	            id.clear();
-	            
-	        } catch (Exception e) {
-	            Notification.show("Erro ao salvar: " + e.getMessage()).addThemeVariants(NotificationVariant.LUMO_ERROR);
-	        }
-	        
-	    } else {
-	        Notification.show("Preencha os campos obrigatórios corretamente.").addThemeVariants(NotificationVariant.LUMO_ERROR);
-	    }
-	}
+        // Só troca a senha se uma nova foi informada
+        //if (!senhaDigitada.isBlank()) {
+        //    operador.setSenha(senhaDigitada);
+        //}
+
+        Optional<Operador> operadorExistente = repository.findByLoginName(operador.getLoginName());
+        if (operadorExistente.isPresent()
+                && !operadorExistente.get().getId().equals(operador.getId())) {
+            Notification.show("Nome de Login já usado por outro operador!")
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
+
+        try {
+            Operador salvo = service.salvarOperador(operador, senhaDigitada);
+            Notification.show("Operador salvo com sucesso! ID: " + salvo.getId())
+                    .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            limparFormulario();
+            id.clear();
+        } catch (Exception e) {
+            Notification.show("Erro ao salvar: " + e.getMessage())
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
+    }
 
     private void limparFormulario() {
-        binder.readBean(null);
-        nome.clear();
-        loginName.clear();
-        email.clear();
-        empresa.clear();
-        senha.clear();
+        operadorEmEdicao = null;
+        binder.readBean(null);   // limpa os campos ligados ao binder
+        senha.clear();           // campos de senha não estão no binder
         confirmarSenha.clear();
         ativo.setValue(true);
     }
