@@ -11,34 +11,82 @@ import com.vaadin.flow.component.dialog.Dialog;
 
 public class LookupEmpresa {
 		
-	    public void VerTodasEmpresas(EmpresaRepository empresaRepository, Consumer<Empresa> selecionarListener) {
-	        GridComponent<Empresa> grid = new GridComponent<>(Empresa.class);
-			
-	        Dialog dialog = new Dialog();
-	        dialog.setHeaderTitle("Operadores");
-	        dialog.setWidth("280px");
-			
-	        List<Empresa> listaEmpresas= empresaRepository.findAll();
-			
-	        grid.setColumnReorderingAllowed(true);
-	        grid.addColunaComFiltro(Empresa::getId, "ID", TipoColunas.Numerico);
-	        grid.addColunaComFiltro(Empresa::getDescricao, "Nome", TipoColunas.Alfanumerico);
-			
-	        
-	        grid.addItemDoubleClickListener(event -> {
-	            Empresa selecionado = event.getItem();
-	            if (selecionarListener != null) {
-	            	selecionarListener.accept(selecionado);
-	            }
-	            dialog.close();
-	        });
-			
-	        dialog.setWidth("60vw");
-	        dialog.setHeight("40vh");
-	        
-	        grid.setItensComFiltro(listaEmpresas);
-	        dialog.add(grid);
-	        
-	        dialog.open();
-	    }
+	public void VerTodasEmpresas(EmpresaRepository empresaRepository, Consumer<Empresa> selecionarListener) {
+		GridComponent<Empresa> grid = new GridComponent<>(Empresa.class);
+
+		Dialog dialog = new Dialog();
+		dialog.setHeaderTitle("Empresas");
+		dialog.setWidth("280px");
+
+		List<Empresa> listaEmpresas= empresaRepository.findAll();
+
+		grid.setColumnReorderingAllowed(true);
+		grid.addColunaComFiltro(Empresa::getId, "ID", TipoColunas.Numerico);
+		grid.addColunaComFiltro(Empresa::getDescricao, "Nome", TipoColunas.Alfanumerico);
+
+
+		grid.addItemDoubleClickListener(event -> {
+			Empresa selecionado = event.getItem();
+			if (selecionarListener != null) {
+				selecionarListener.accept(selecionado);
+			}
+			dialog.close();
+		});
+
+		dialog.setWidth("60vw");
+		dialog.setHeight("40vh");
+
+		grid.setItensComFiltro(listaEmpresas);
+		dialog.add(grid);
+
+		dialog.open();
 	}
+
+	/*
+	* paramConsiderar
+	* 1 = Apenas ativos
+	* 2 = Apenas inativos
+	* 3 = Todos
+	* */
+
+	public void VerTodasEmpresas(EmpresaRepository empresaRepository, Consumer<Empresa> selecionarListener, int paramConsiderar) {
+		GridComponent<Empresa> grid = new GridComponent<>(Empresa.class);
+
+		Dialog dialog = new Dialog();
+		dialog.setHeaderTitle("Empresas");
+		dialog.setWidth("280px");
+
+		List<Empresa> listaEmpresas;
+		switch (paramConsiderar){
+			case 1:
+				listaEmpresas= empresaRepository.findBySituacao(true);
+				break;
+			case 2:
+				listaEmpresas= empresaRepository.findBySituacao(false);
+				break;
+            default:
+				listaEmpresas= empresaRepository.findAll();
+		}
+
+		grid.setColumnReorderingAllowed(true);
+		grid.addColunaComFiltro(Empresa::getId, "ID", TipoColunas.Numerico);
+		grid.addColunaComFiltro(Empresa::getDescricao, "Nome", TipoColunas.Alfanumerico);
+
+
+		grid.addItemDoubleClickListener(event -> {
+			Empresa selecionado = event.getItem();
+			if (selecionarListener != null) {
+				selecionarListener.accept(selecionado);
+			}
+			dialog.close();
+		});
+
+		dialog.setWidth("60vw");
+		dialog.setHeight("40vh");
+
+		grid.setItensComFiltro(listaEmpresas);
+		dialog.add(grid);
+
+		dialog.open();
+	}
+}
