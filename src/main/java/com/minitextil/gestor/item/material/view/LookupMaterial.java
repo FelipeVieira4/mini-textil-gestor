@@ -22,7 +22,6 @@ public class LookupMaterial {
 
         List<Material> listaOperadores = materialRepository.findAll();
 
-        grid.setColumnReorderingAllowed(true);
         grid.addColunaComFiltro(Material::getId, "ID", TipoColunas.Numerico);
         grid.addColunaComFiltro(Material::getDescricao, "Descrição", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Material::getUnidade, "Unidade", TipoColunas.Alfanumerico);

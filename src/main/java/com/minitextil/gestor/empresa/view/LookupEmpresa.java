@@ -20,7 +20,6 @@ public class LookupEmpresa {
 
 		List<Empresa> listaEmpresas= empresaRepository.findAll();
 
-		grid.setColumnReorderingAllowed(true);
 		grid.addColunaComFiltro(Empresa::getId, "ID", TipoColunas.Numerico);
 		grid.addColunaComFiltro(Empresa::getDescricao, "Nome", TipoColunas.Alfanumerico);
 

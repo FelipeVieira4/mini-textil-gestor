@@ -20,8 +20,6 @@ public class LookupNatureza {
 
         List<Natureza> listaNatureza = naturezaRepository.findByIdCodEmpresaOrderByIdCodNatureza(codEmpresa);
 
-        grid.setColumnReorderingAllowed(true);
-        //grid.addColunaComFiltro(natureza -> natureza.getId().getCodEmpresa(), "Código Empresa", TipoColunas.Numerico);
         grid.addColunaComFiltro(natureza -> natureza.getId().getCodNatureza(), "Código Natureza", TipoColunas.Numerico);
         grid.addColunaComFiltro(Natureza::getDescricao, "Descrição", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Natureza::getAtivo, "Ativo", TipoColunas.Boolean);
