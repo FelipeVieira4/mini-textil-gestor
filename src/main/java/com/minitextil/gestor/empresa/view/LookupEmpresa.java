@@ -18,7 +18,7 @@ public class LookupEmpresa {
 		dialog.setHeaderTitle("Empresas");
 		dialog.setWidth("280px");
 
-		List<Empresa> listaEmpresas= empresaRepository.findAll();
+		List<Empresa> listaEmpresas = empresaRepository.findAll();
 
 		grid.addColunaComFiltro(Empresa::getId, "ID", TipoColunas.Numerico);
 		grid.addColunaComFiltro(Empresa::getDescricao, "Nome", TipoColunas.Alfanumerico);
