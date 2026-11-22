@@ -14,6 +14,7 @@ public class Natureza {
     private NaturezaId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("codEmpresa")
     @JoinColumn(name = "cod_empresa", nullable = false)
     private Empresa empresa;
 
