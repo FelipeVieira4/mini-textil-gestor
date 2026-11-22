@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NaturezaService {
-    @Autowired
     private NaturezaRepository repository;
 
+    @Autowired
+    public NaturezaService(NaturezaRepository repository) {
+    	this.repository=repository;
+    }
+    
     public Natureza salvar(Natureza natureza) {
         return repository.save(natureza);
     }

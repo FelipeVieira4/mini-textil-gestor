@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.minitextil.gestor.components.core.program.InstanceProgram;
 import com.minitextil.gestor.components.core.program.ModuloDef;
 import com.minitextil.gestor.components.core.program.ProgramParams;
@@ -55,6 +57,7 @@ public class MainLayout extends AppLayout {
     private final ProgramRegistry programRegistry;
     private final AuthenticationContext authenticationContext;
 
+    @Autowired
     public MainLayout(EmpresaRepository empresaRepository, UsuarioSessao usuarioSessao, ProgramRegistry programRegistry, AuthenticationContext authenticationContext) {
         this.empresaRepository = empresaRepository;
         this.usuarioSessao = usuarioSessao;

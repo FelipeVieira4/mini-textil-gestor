@@ -11,9 +11,12 @@ import com.minitextil.gestor.operador.repository.OperadorRepository;
 @Service
 public class AutenticacaoService implements UserDetailsService {
 
+	private OperadorRepository repository;
+	
 	@Autowired
-    private OperadorRepository repository;
-
+	public AutenticacaoService (OperadorRepository repository) {
+		this.repository=repository;
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
