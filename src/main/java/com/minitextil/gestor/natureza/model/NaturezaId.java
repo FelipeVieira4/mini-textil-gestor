@@ -9,11 +9,12 @@ import java.util.Objects;
 @Embeddable
 public class NaturezaId implements Serializable {
 
-    @Column(name = "cod_empresa")
+    @Column(name = "cod_empresa", nullable = false)
     private Long codEmpresa;
 
-    @Column(name = "cod_natureza")
+    @Column(name = "cod_natureza", nullable = false)
     private Long codNatureza;
+
 
     public NaturezaId() {}
 

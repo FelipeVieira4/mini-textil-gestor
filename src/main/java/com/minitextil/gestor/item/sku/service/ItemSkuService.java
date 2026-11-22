@@ -8,6 +8,8 @@ import com.minitextil.gestor.item.variantes.model.Variante;
 import com.minitextil.gestor.item.variantes.repository.VarianteRepository;
 import com.vaadin.flow.router.NotFoundException;
 import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class ItemSkuService {
     private final MaterialRepository materialRepository;
     private final VarianteRepository varianteRepository;
 
+    @Autowired
     public ItemSkuService(ItemSkuRepository itemSkuRepository,
                           MaterialRepository materialRepository,
                           VarianteRepository varianteRepository) {

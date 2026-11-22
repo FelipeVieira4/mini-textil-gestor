@@ -5,6 +5,7 @@ import com.minitextil.gestor.operador.model.Operador;
 import com.minitextil.gestor.operador.repository.OperadorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final OperadorAdminProperties adminProperties;
 
+    @Autowired
     public DataInitializer(OperadorRepository operadorRepository, PasswordEncoder passwordEncoder,OperadorAdminProperties adminProperties) {
         this.operadorRepository = operadorRepository;
         this.passwordEncoder = passwordEncoder;

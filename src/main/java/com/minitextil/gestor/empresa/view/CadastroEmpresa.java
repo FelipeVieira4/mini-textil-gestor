@@ -2,7 +2,6 @@ package com.minitextil.gestor.empresa.view;
 
 import java.util.Optional;
 
-import com.minitextil.gestor.cliente.model.Cliente;
 import com.minitextil.gestor.components.core.program.ProgramErp;
 import com.minitextil.gestor.empresa.model.Empresa;
 import com.minitextil.gestor.empresa.repository.EmpresaRepository;

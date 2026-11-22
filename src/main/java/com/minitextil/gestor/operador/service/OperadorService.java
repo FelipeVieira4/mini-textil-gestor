@@ -10,12 +10,16 @@ import com.minitextil.gestor.operador.repository.OperadorRepository;
 
 @Service
 public class OperadorService {
-	@Autowired
-	private OperadorRepository repository;
 	
-	@Autowired
+	private OperadorRepository repository;
 	private PasswordEncoder	 passwordEncoder;
 
+	@Autowired
+	public OperadorService (OperadorRepository repository,
+							PasswordEncoder passwordEncoder){
+		
+	}
+	
 	@Transactional
 	public Operador salvarOperador(Operador operador, String senhaNova) {
 		boolean temSenhaNova = senhaNova != null && !senhaNova.isBlank();
