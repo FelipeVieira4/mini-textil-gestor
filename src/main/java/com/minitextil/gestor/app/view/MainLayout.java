@@ -226,7 +226,8 @@ public class MainLayout extends AppLayout {
 
         if (!instances.isEmpty()) {
             int nextIndex = Math.max(0, index - 1);
-            Tab nextTab = (Tab) instanceTabs.getComponentAt(nextIndex);
+            //Tab nextTab = (Tab) instanceTabs.getComponentAt(nextIndex);
+            Tab nextTab = instanceTabs.getTabAt(nextIndex);
             instanceTabs.setSelectedTab(nextTab);
         } else {
             instanceContentArea.removeAll();
