@@ -25,17 +25,6 @@ public class VaadinSecurityConfig {
         return http.build();
     }
 
-    /* para ativar login pelo usuário configurado no application.properties comentar também a classe AutenticacaoService.java
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        return new InMemoryUserDetailsManager(
-            User.withUsername(adminUserName)	// por hora logar apenas com usuário admin configurado no application.properties
-                .password(encoder.encode(adminPassword))
-                .roles("USER")
-                .build()
-        );
-    }*/
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/images/**");
