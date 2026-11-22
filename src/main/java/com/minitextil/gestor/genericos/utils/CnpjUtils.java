@@ -1,7 +1,5 @@
 package com.minitextil.gestor.genericos.utils;
 
-import org.springframework.stereotype.Service;
-
 public final class CnpjUtils {
     public static String limpar(String valor) {
         return valor == null ? null : valor.replaceAll("[^A-Za-z0-9]", "").toUpperCase();
