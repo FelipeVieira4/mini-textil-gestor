@@ -17,12 +17,11 @@ public class LookupMaterial {
         GridComponent<Material> grid = new GridComponent<>(Material.class);
 
         Dialog dialog = new Dialog();
-        dialog.setHeaderTitle("Itens");
+        dialog.setHeaderTitle("Materiais");
         dialog.setWidth("280px");
 
         List<Material> listaOperadores = materialRepository.findAll();
 
-        grid.setColumnReorderingAllowed(true);
         grid.addColunaComFiltro(Material::getId, "ID", TipoColunas.Numerico);
         grid.addColunaComFiltro(Material::getDescricao, "Descrição", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Material::getUnidade, "Unidade", TipoColunas.Alfanumerico);

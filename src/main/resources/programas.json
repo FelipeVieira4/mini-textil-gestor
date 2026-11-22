@@ -94,5 +94,15 @@
         "viewClassName": "com.minitextil.gestor.fornecedor.view.ConsultaFornecedor"
       }
     ]
+  },
+  {
+    "modulo": "Natureza",
+    "programas": [
+      {
+        "id": "CADASTRO_NATUREZA",
+        "titulo": "Cadastro de Natureza",
+        "viewClassName": "com.minitextil.gestor.natureza.view.CadastroNatureza"
+      }
+    ]
   }
 ]

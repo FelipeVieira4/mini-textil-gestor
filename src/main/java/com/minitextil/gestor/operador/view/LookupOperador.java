@@ -20,8 +20,7 @@ public class LookupOperador {
         dialog.setWidth("280px");
 		
         List<Operador> listaOperadores = operadorRepository.findAll();
-		
-        grid.setColumnReorderingAllowed(true);
+
         grid.addColunaComFiltro(Operador::getId, "ID", TipoColunas.Numerico);
         grid.addColunaComFiltro(Operador::getNome, "Nome", TipoColunas.Alfanumerico);
         grid.addColunaComFiltro(Operador::getEmail, "Email", TipoColunas.Alfanumerico);
