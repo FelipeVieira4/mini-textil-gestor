@@ -17,7 +17,6 @@ public class LookupItemSku {
         dialog.setWidth("60vw");
         dialog.setHeight("40vh");
 
-        grid.setColumnReorderingAllowed(true);
         ItemSkuColunas.configurar(grid);
 
         grid.addItemDoubleClickListener(event -> {
