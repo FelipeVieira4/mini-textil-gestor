@@ -34,17 +34,18 @@ public class Operador implements Serializable,UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 150)
-    @NotBlank(message = "O nome é obrigatório")
-    @Size(max = 150)
+    @Column(name = "nome", nullable = false)
+    @NotBlank(message = "Nome do operador é obrigatório")
+    @Size(max = 60,message = "Nome do operador não pode ser maior que 60 caracteres!")
     private String nome;
 
-    @Column(nullable=false,unique = true)
+    @Column(name = "login_name", nullable = false,unique = true)
     @NotBlank(message = "O nome do usuário no sistema é obrigatório")
     private String loginName;
     
-    @Column(name = "email", unique = true, length = 150)
+    @Column(name = "email", unique = true)
     @Email(message = "Email inválido")
+    @Size(max = 60,message = "Email do operador não pode ser maior que 60 caracteres!")
     private String email;
 
     @Column(name = "senha", nullable = false)

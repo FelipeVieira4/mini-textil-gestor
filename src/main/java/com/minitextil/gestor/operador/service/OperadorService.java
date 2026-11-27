@@ -17,7 +17,8 @@ public class OperadorService {
 	@Autowired
 	public OperadorService (OperadorRepository repository,
 							PasswordEncoder passwordEncoder){
-		
+		this.repository = repository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@Transactional
@@ -31,9 +32,6 @@ public class OperadorService {
 			throw new IllegalArgumentException("A senha é obrigatória para novo operador.");
 		}
 		// Edição sem senha nova: mantém o hash que já está no operador, sem codificar de novo.
-
 		return repository.save(operador);
 	}
-	
-	//public boolean validarSenhaOperador(String senha,OperadorModel)
 }

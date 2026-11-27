@@ -9,6 +9,6 @@ public class ApplicationInfo {
 	private String appVersion;
 	
 	public String getVersion() {
-		return this.appVersion==null?"Não Informado":this.appVersion;
+		return this.appVersion == null ? "Não Informado" : this.appVersion;
 	}
 }

@@ -15,7 +15,7 @@ public class AutenticacaoService implements UserDetailsService {
 	
 	@Autowired
 	public AutenticacaoService (OperadorRepository repository) {
-		this.repository=repository;
+		this.repository = repository;
 	}
 	
 	@Override

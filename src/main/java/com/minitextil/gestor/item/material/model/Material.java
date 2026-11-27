@@ -12,18 +12,16 @@ public class Material {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Descrição do produto obrigátorio!")
+	@NotBlank(message = "Descrição do produto obrigatório!")
 	private String descricao;
 
 	@Column(nullable = false)
+	@NotNull(message = "Situação do matérial não pode ser nulo!")
 	private boolean ativo = true;
 
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "Unidade do produto obrigátorio!")
+	@NotNull(message = "Unidade do produto obrigatório!")
 	private UnidadeMedida unidade;
-
-	//@OneToOne(fetch = FetchType.LAZY)
-	//private ItemSku origemSku;   // nome mais claro: só é preenchido em itens reduzidos
 
 	public Long getId() {
 		return id;

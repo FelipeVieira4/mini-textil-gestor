@@ -8,8 +8,9 @@ import java.util.Objects;
 
 @Embeddable
 public class NaturezaId implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    @Column(name = "cod_empresa", nullable = false)
+	@Column(name = "cod_empresa", nullable = false)
     private Long codEmpresa;
 
     @Column(name = "cod_natureza", nullable = false)

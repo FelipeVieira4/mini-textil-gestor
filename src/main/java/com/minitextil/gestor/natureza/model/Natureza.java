@@ -18,13 +18,13 @@ public class Natureza {
     @JoinColumn(name = "cod_empresa", nullable = false)
     private Empresa empresa;
 
-    @NotBlank(message = "Descrição não pode ser nula!")
-    @Size(max = 75, message = "Descrição não pode passar de 75 caracteres!")
     @Column(nullable = false, length = 75)
+    @NotBlank(message = "Descrição da natureza não pode ser nula!")
+    @Size(max = 75, message = "Descrição da natureza não pode passar de 75 caracteres!")
     private String descricao;
 
-    @NotNull(message = "Situação não pode ser nulo!")
     @Column(name = "is_ativo", nullable = false)
+    @NotNull(message = "Situação não pode ser nulo!")
     private Boolean ativo = false;
 
     public NaturezaId getId() { return id; }

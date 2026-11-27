@@ -50,8 +50,10 @@ public class CadastroOperador extends ProgramErp {
 
     private Operador operadorEmEdicao;
 
-    public CadastroOperador(OperadorRepository repository, OperadorService service,
-                            EmpresaRepository empresaRepository) {
+    public CadastroOperador(OperadorRepository repository,
+    						OperadorService service,
+                            EmpresaRepository empresaRepository
+	) {
         this.repository = repository;
         this.service = service;
         this.empresaRepository = empresaRepository;
