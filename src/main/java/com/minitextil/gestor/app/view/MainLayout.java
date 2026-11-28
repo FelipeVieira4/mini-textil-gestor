@@ -83,7 +83,7 @@ public class MainLayout extends AppLayout {
         });
 
         // Abre a tela inicial padrão ao carregar o ERP
-        openNewInstance("HOME", ProgramParams.empty());
+        openNewInstance("HOME", ProgramParams.empty(), false);
     }
 
     private void addHeaderContent() {
@@ -178,13 +178,13 @@ public class MainLayout extends AppLayout {
         SideNavItem item = new SideNavItem(programa.titulo());
         item.setPrefixComponent(VaadinIcon.FILE_TEXT_O.create());
         item.getElement().addEventListener("click", _ ->
-                openNewInstance(programa.id(), ProgramParams.empty())
+                openNewInstance(programa.id(), ProgramParams.empty(), true)
         );
         itensMenu.put(programa.id(), item);
         return item;
     }
 
-    public void openNewInstance(String programaId, ProgramParams params) {
+    public void openNewInstance(String programaId, ProgramParams params, boolean isClosable) {
         ProgramaDef programaDef;
         try {
             programaDef = programRegistry.get(programaId);
@@ -195,20 +195,24 @@ public class MainLayout extends AppLayout {
 
         Span titulo = new Span(programaDef.titulo());
 
-        Button btnFechar = new Button(VaadinIcon.CLOSE_SMALL.create());
-        btnFechar.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
-        btnFechar.getStyle().set("font-size", "12px").set("margin-left", "8px");
 
-        HorizontalLayout tabContent = new HorizontalLayout(titulo, btnFechar);
+        HorizontalLayout tabContent = new HorizontalLayout(titulo);
         tabContent.setAlignItems(FlexComponent.Alignment.CENTER);
         tabContent.setSpacing(false);
-
+        
         Tab tab = new Tab(tabContent);
-
-        btnFechar.getElement().addEventListener("click", _ -> closeInstance(tab))
-                .addEventData("event.stopPropagation()");
-
-        InstanceProgram instanceProgram = new InstanceProgram(programRegistry, programaId, params, tab);
+        
+        if (isClosable) {
+	        Button btnFechar = new Button(VaadinIcon.CLOSE_SMALL.create());
+	        btnFechar.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
+	        btnFechar.getStyle().set("font-size", "12px").set("margin-left", "8px");
+	
+	        btnFechar.getElement().addEventListener("click", _ -> closeInstance(tab))
+	                .addEventData("event.stopPropagation()");
+	        
+	        tabContent.add(btnFechar);
+        }
+        InstanceProgram instanceProgram = new InstanceProgram(programRegistry, programaId, params, tab, isClosable);
 
         instances.put(tab, instanceProgram);
         programaPorAba.put(tab, programaId);

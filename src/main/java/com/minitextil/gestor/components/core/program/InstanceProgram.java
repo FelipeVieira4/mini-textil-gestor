@@ -26,10 +26,14 @@ public class InstanceProgram extends VerticalLayout {
     private final Tab instanceTab;
     private final ProgramRegistry programRegistry;
 
-    public InstanceProgram(ProgramRegistry programRegistry, String rootProgramId, ProgramParams rootParams, Tab instanceTab) {
+    private boolean isClosable=true;
+    
+    public InstanceProgram(ProgramRegistry programRegistry, String rootProgramId, ProgramParams rootParams, Tab instanceTab, boolean isTabClosable) {
         this.programRegistry = programRegistry;
         this.instanceTab = instanceTab;
 
+        this.setClosable(isTabClosable);
+        
         setSizeFull();
         setPadding(false);
         setSpacing(false);
@@ -172,4 +176,14 @@ public class InstanceProgram extends VerticalLayout {
             owner.popProgram(result);
         }
     }
+
+	public boolean isClosable() {
+		return isClosable;
+	}
+
+	public void setClosable(boolean isClosable) {
+		this.isClosable = isClosable;
+	}
+    
+    
 }
