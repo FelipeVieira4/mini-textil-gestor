@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.minitextil.gestor.empresa.model.Empresa;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {

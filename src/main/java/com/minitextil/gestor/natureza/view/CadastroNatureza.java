@@ -94,7 +94,7 @@ public class CadastroNatureza extends ProgramErp {
 
         codNatureza.setValueChangeMode(ValueChangeMode.ON_BLUR);
         codNatureza.setHelperText("Deixe em branco para gerar o próximo código");
-        codNatureza.addValueChangeListener(event -> tentarCarregar());
+        codNatureza.addValueChangeListener(_ -> tentarCarregar());
 
         btObterEmpresa.addClickListener(_ -> {
             LookupEmpresa lookup = new LookupEmpresa();
