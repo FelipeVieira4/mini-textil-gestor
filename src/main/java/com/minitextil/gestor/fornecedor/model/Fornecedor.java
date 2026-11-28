@@ -4,6 +4,7 @@ import com.minitextil.gestor.genericos.embeddable.Endereco;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -17,35 +18,37 @@ public class Fornecedor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "descricao")
     @NotBlank(message = "A descrição não pode estar em branco")
     @Size(max = 100, message = "A descrição deve ter no máximo 150 caracteres")
     private String descricao;
 
-    @Column(nullable = false)
-    private Boolean situacao=false;
+    @Column(name="is_ativo", nullable = false)
+    @NotNull(message = "Situação do fornecedor é obrigatório!")
+    private Boolean situacao = false;
 
-    @NotBlank(message = "O CNPJ é obrigatório")
     @Column(nullable = false, unique = true, length = 14)
+    @NotBlank(message = "O CNPJ é obrigatório")
     private String cnpj;
 
-    @CreatedDate
     @Column(name = "data_criacao", nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime dataCriacao;
 
-    @LastModifiedDate
     @Column(name = "data_atualizacao")
+    @LastModifiedDate
     private LocalDateTime dataAtualizacao;
 
     @Embedded
     private Endereco endereco;
 
+    @Column(name="telefone", length = 11)
     @Size(min = 10, max = 11, message = "O telefone deve ter 10 ou 11 dígitos (com DDD)")
-    @Column(length = 11)
     private String telefone;
 
+    @Column(name = "email", length = 150)
     @Email(message = "E-mail inválido")
     @Size(max = 150, message = "O e-mail deve ter no máximo 150 caracteres")
-    @Column(length = 150)
     private String email;
 
     public Long getId() {

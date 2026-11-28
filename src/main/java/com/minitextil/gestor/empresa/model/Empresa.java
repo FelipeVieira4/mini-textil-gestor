@@ -22,14 +22,15 @@ public class Empresa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "Descrição obrigátorio!")
+	@Column(name = "descricao", unique = true, nullable = false)
+	@NotBlank(message = "Descrição obrigatório!")
 	private String descricao;
 	
-	@Column(unique = true,nullable = false)
+	@Column(name = "cnpj", unique = true, nullable = false)
 	@NotBlank(message = "CNPJ obrigátorio!")
 	private String cnpj;
 	
-	@Column(nullable = false)
+	@Column(name = "is_ativo", nullable = false)
 	@NotNull(message = "Situação não informado!")
 	private boolean situacao;
 
